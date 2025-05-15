@@ -266,9 +266,9 @@ For any questions about your application status, contact DR. Pranjit Das at +91 
 - Ensure you have a stable internet connection and a device to complete the form.
 
 #### 2. Complete the Personal Details Section
-- **Preferences**: Select up to four B.Tech program preferences (e.g., Computer Science and Engineering, AI & ML, Electronics and Communication Engineering, etc.).
+- **Preferences**: Select up to four B.Tech program preferences (e.g., Computer Science and Engineering, AI & ML, Electronics and Communication Engineering, etc.). **Note: If you select only one preference, your application will still be processed. Please wait for the merit list announcement before making any decisions.**
 - **Entrance Exams**:
-  - Indicate whether you have appeared for the Common Entrance Examination (CEE). If the result is not declared, provide the roll number.
+  - Indicate whether you have appeared for the Common Entrance Examination (CEE). If the result is not declared, provide the roll number. **For the 2025 academic year, as CEE results are not available, please submit your roll number in both the RANK and ROLL NO input boxes.**
   - Indicate whether you have appeared for the Joint Entrance Examination (JEE). If the result is not declared, provide the roll number.
 - **Personal Information**:
   - Name: Enter your First Name and Last Name.
@@ -331,6 +331,7 @@ The last date to submit the application is May 15, 2025, for the academic year s
 
 ### Additional Requirements and Notes
 - **Eligibility**: You must have passed or appeared for the 10+2 standard in the science stream, meeting AICTE norms for B.Tech programs.
+- **Lost or Stolen Admit Cards**: If your CEE or JEE admit card has been stolen or lost, you can submit your Class 12 marks as an alternative. Please contact the administration directly at registrar@bssrv.ac.in or call +91 97069 95315 to explain your situation and receive guidance on the alternative application process.
 - **Contact for Queries**: For specific details (e.g., exact eligibility criteria or document requirements), reach out to:
   - Dr. Pranjit Das (Engineering and Technology): +91 97069 95315
   - General Queries: Dr. Uday Kumar Khanikar (Registrar) or Dr. Udayan Baruah (Controller of Examinations).

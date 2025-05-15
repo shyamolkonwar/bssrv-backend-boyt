@@ -21,13 +21,10 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# Import SSL configuration
-from .ssl_config import get_ssl_context
-
 # Enable CORS for Next.js frontend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000", "https://bssrv.netlify.app", "https://bssrv-ai-chat.netlify.app", "https://ebf0-2409-40e6-123-8750-edec-2eaa-b6ee-aaf5.ngrok-free.app"],
+    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000", "https://bssrv.netlify.app", "https://b8e0-2409-40e6-135-89d0-1d03-466d-b8c6-2b43.ngrok-free.app"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -81,8 +78,8 @@ def initialize_vector_store(document_paths: List[str], kb_name: str) -> Optional
             return None
             
         print(f"Splitting document for {kb_name}...")
-        # Use even smaller chunk size with higher overlap for more precise retrieval
-        text_splitter = RecursiveCharacterTextSplitter(chunk_size=350, chunk_overlap=250)
+        # Use smaller chunk size with higher overlap for more precise retrieval
+        text_splitter = RecursiveCharacterTextSplitter(chunk_size=300, chunk_overlap=100)
         docs = text_splitter.split_documents(all_docs)
         print(f"Created {len(docs)} chunks for {kb_name}")
         
@@ -219,7 +216,7 @@ def is_agriculture_query(query: str) -> bool:
     return any(term in query_lower for term in agriculture_terms)
 
 # Replace query_gemini with query_gemini
-def query_gemini(prompt: str, user_name: Optional[str] = None, kb_name: Optional[str] = None, model_name: str = "gemini-2.0-flash"):
+def query_gemini(prompt: str, user_name: Optional[str] = None, kb_name: Optional[str] = None, model_name: str = "gemini-2.0-flash", is_assamese_english_mixed: bool = False):
     # Enhanced system message with strong emphasis on maintaining conversation context and using context data
     system_message = """You are a friendly and helpful BSSRV University assistant. Respond in a natural, conversational way as if you're having a casual chat. 
 
@@ -253,6 +250,19 @@ IMPORTANT GUIDELINES:
 16. ALWAYS PRIORITIZE INFORMATION FROM THE CONTEXT OVER SAYING "I DON'T HAVE THAT INFORMATION".
 
 CRITICAL INSTRUCTION: BSSRV University DOES NOT offer ANY agriculture programs, BSc Agriculture, or agricultural sciences. If asked about agriculture programs, clearly state that BSSRV does not offer such programs and only offers B.Tech programs. DO NOT provide any information about how to apply for agricultural programs, as they DO NOT EXIST at BSSRV University. There is NO agriculture department, NO agriculture website, and NO agriculture admission process.
+"""
+
+    # Add language instructions for Assamese-English mixed language
+    if is_assamese_english_mixed:
+        system_message += """
+LANGUAGE STYLE REQUIREMENT - EXTREMELY IMPORTANT: 
+1. The user is writing in a mix of English and Assamese (Anglo-Assamese written in English script).
+2. You MUST respond in the SAME mixed language style - use Assamese words written in English script mixed with English.
+3. NEVER use Bengali script (অ, আ, ক, etc.) or any other non-Latin script in your response.
+4. Common Assamese words to use: moi (I), amar/mor (my), apuni (you formal), tumi (you informal), ase (is/have), nai (is not/don't have), kiman (how much), kene (how), kisu (something), koribo (will do), korim (I will do), lage (need/require).
+5. Keep technical terms, program names, and college names in English.
+6. Example format: "Apuni 60% paisile, so apuni eligible ase. CSE program pabo ba napabo depends koribo entrance exam or marks upot."
+7. This is CRITICAL: NEVER use Bengali script characters. Only use Latin/English alphabet to write Assamese words.
 """
 
     if kb_name and kb_name in knowledge_bases:
@@ -273,6 +283,14 @@ CRITICAL INSTRUCTION: BSSRV University DOES NOT offer ANY agriculture programs, 
         
         response_text = response.text
         
+        # If Assamese-English mixed mode and response contains Bengali script, regenerate with stronger instructions
+        if is_assamese_english_mixed and any(ord(c) >= 0x0980 and ord(c) <= 0x09FF for c in response_text):
+            # This detects Bengali Unicode range
+            print("Detected Bengali script in response when Assamese-English mixed was requested. Regenerating...")
+            stronger_prompt = full_prompt + "\n\nCRITICAL ERROR: Your previous response contained Bengali script characters. NEVER use Bengali script. Respond ONLY using English alphabet/Latin characters even for Assamese words."
+            response = model.generate_content(stronger_prompt)
+            response_text = response.text
+            
         # Apply post-processing to remove duplicate questions
         response_text = remove_duplicate_questions(response_text)
         
@@ -282,7 +300,7 @@ CRITICAL INSTRUCTION: BSSRV University DOES NOT offer ANY agriculture programs, 
         raise HTTPException(status_code=500, detail=f"Error querying Gemini API: {str(e)}")
 
 # Update the streaming function to use Gemini instead of Groq
-async def query_gemini_stream(prompt: str, user_name: Optional[str] = None, kb_name: Optional[str] = None) -> AsyncGenerator[str, None]:
+async def query_gemini_stream(prompt: str, user_name: Optional[str] = None, kb_name: Optional[str] = None, is_assamese_english_mixed: bool = False) -> AsyncGenerator[str, None]:
     # Enhanced system message with strong emphasis on maintaining conversation context and using context data
     system_message = """You are a friendly and helpful BSSRV University assistant. Respond in a natural, conversational way as if you're having a casual chat. 
 
@@ -318,6 +336,19 @@ IMPORTANT GUIDELINES:
 CRITICAL INSTRUCTION: BSSRV University DOES NOT offer ANY agriculture programs, BSc Agriculture, or agricultural sciences. If asked about agriculture programs, clearly state that BSSRV does not offer such programs and only offers B.Tech programs. DO NOT provide any information about how to apply for agricultural programs, as they DO NOT EXIST at BSSRV University. There is NO agriculture department, NO agriculture website, and NO agriculture admission process.
 """
 
+    # Add language instructions for Assamese-English mixed language
+    if is_assamese_english_mixed:
+        system_message += """
+LANGUAGE STYLE REQUIREMENT - EXTREMELY IMPORTANT: 
+1. The user is writing in a mix of English and Assamese (Anglo-Assamese written in English script).
+2. You MUST respond in the SAME mixed language style - use Assamese words written in English script mixed with English.
+3. NEVER use Bengali script (অ, আ, ক, etc.) or any other non-Latin script in your response.
+4. Common Assamese words to use: moi (I), amar/mor (my), apuni (you formal), tumi (you informal), ase (is/have), nai (is not/don't have), kiman (how much), kene (how), kisu (something), koribo (will do), korim (I will do), lage (need/require).
+5. Keep technical terms, program names, and college names in English.
+6. Example format: "Apuni 60% paisile, so apuni eligible ase. CSE program pabo ba napabo depends koribo entrance exam or marks upot."
+7. This is CRITICAL: NEVER use Bengali script characters. Only use Latin/English alphabet to write Assamese words.
+"""
+
     if kb_name and kb_name in knowledge_bases:
         if kb_name == "general":
             system_message += " You are currently using the general university information knowledge base. You should provide helpful information about BSSRV University, its history, campus, facilities, departments, and courses based on the context provided."
@@ -335,6 +366,14 @@ CRITICAL INSTRUCTION: BSSRV University DOES NOT offer ANY agriculture programs, 
         response = model.generate_content(full_prompt)
         
         response_text = response.text
+        
+        # Check if response contains Bengali script characters when Assamese-English was requested
+        if is_assamese_english_mixed and any(ord(c) >= 0x0980 and ord(c) <= 0x09FF for c in response_text):
+            # This detects Bengali Unicode range
+            print("Detected Bengali script in streaming response when Assamese-English mixed was requested. Regenerating...")
+            stronger_prompt = full_prompt + "\n\nCRITICAL ERROR: Your previous response contained Bengali script characters. NEVER use Bengali script. Respond ONLY using English alphabet/Latin characters even for Assamese words."
+            response = model.generate_content(stronger_prompt)
+            response_text = response.text
         
         # For streaming simulation, we'll break the response into chunks
         chunk_size = 15  # Characters per chunk
@@ -371,6 +410,7 @@ class ChatRequest(BaseModel):
     query: str
     user_name: Optional[str] = None
     kb_name: Optional[str | List[str]] = None
+    is_assamese_english_mixed: Optional[bool] = False
 
 class KnowledgeBaseInfo(BaseModel):
     name: str
@@ -528,8 +568,78 @@ async def chat(request: ChatRequest):
         
         try:
             print(f"Performing similarity search for query in the document")
-            # Increase the number of chunks retrieved for more comprehensive information
-            docs = kb.vector_store.similarity_search(request.query, k=15)
+            
+            # Pre-process the query to detect key topics
+            query_lower = request.query.lower()
+            
+            # Check for common topics in the query to optimize retrieval
+            is_eligibility_query = any(term in query_lower for term in [
+                "eligible", "eligibility", "qualify", "qualification", "criteria", 
+                "marks", "percentage", "grade", "cutoff", "get in", "admission", 
+                "requirements", "minimum", "class 12", "12th", "higher secondary"
+            ])
+            
+            is_admission_query = any(term in query_lower for term in [
+                "admission", "apply", "application", "entrance", "exam", "test", "jee",
+                "counseling", "selection", "how to get", "procedure", "process", "enrollment"
+            ])
+            
+            is_program_query = any(term in query_lower for term in [
+                "program", "course", "branch", "department", "major", "specialization",
+                "btech", "b.tech", "engineering", "cse", "ece", "ai", "ml"
+            ])
+            
+            is_fee_query = any(term in query_lower for term in [
+                "fee", "fees", "cost", "tuition", "expense", "payment", "scholarship",
+                "financial", "hostel fee", "semester fee", "annual"
+            ])
+            
+            # If specific topic detected, include topic-specific search filter
+            mmr_filter = None
+            if is_eligibility_query:
+                mmr_filter = "eligibility criteria academic qualifications cutoff marks"
+            elif is_admission_query:
+                mmr_filter = "admission process application procedure selection process"
+            elif is_program_query:
+                mmr_filter = "program courses branch department specialization btech engineering cse ece"
+            elif is_fee_query:
+                mmr_filter = "fee structure tuition fee hostel fee semester fee"
+            
+            # Use MMR for diversity in retrieval when no specific filter is available
+            # This helps to retrieve more diverse and relevant chunks
+            if mmr_filter:
+                # First get topic-specific chunks
+                topic_docs = kb.vector_store.similarity_search(
+                    request.query + " " + mmr_filter, 
+                    k=10
+                )
+                
+                # Then get general chunks related to the query
+                general_docs = kb.vector_store.max_marginal_relevance_search(
+                    request.query, 
+                    k=5,
+                    fetch_k=15
+                )
+                
+                # Combine both sets of chunks, removing duplicates
+                seen_content = set()
+                docs = []
+                
+                for doc in topic_docs + general_docs:
+                    if doc.page_content not in seen_content:
+                        seen_content.add(doc.page_content)
+                        docs.append(doc)
+                
+                # Limit to top 15 chunks
+                docs = docs[:15]
+            else:
+                # If no specific topic detected, use MMR to ensure diverse results
+                docs = kb.vector_store.max_marginal_relevance_search(
+                    request.query, 
+                    k=15,  # Return 15 chunks
+                    fetch_k=25  # Consider 25 chunks for diversity
+                )
+                
             print(f"Found {len(docs)} relevant chunks in the document")
             
             if not docs:
@@ -567,9 +677,20 @@ Important instructions:
 12. PRIORITIZE FACTUAL INFORMATION: Focus on providing factual information from the context first, before adding conversational elements.
 13. BE PRECISE: When asked about specific details like tuition fees, application deadlines, or contact information, provide the exact values from the context.
 """
+
+            # If the query is in Assamese-English mixed language, add instructions to respond similarly
+            if request.is_assamese_english_mixed:
+                prompt += """
+14. LANGUAGE STYLE: The user is using a mix of English and Assamese (Anglo-Assamese). 
+    - Respond in a similar mixed language style 
+    - DO NOT use Bengali script or any other language script
+    - Use common Assamese words like 'moi', 'apuni', 'tumi', 'ase', 'nai', 'loi', 'korim', 'koribo', 'lage' etc.
+    - Keep technical terms, college names, and program names in English
+15. NEVER respond in Bengali language or script. Assamese mixed with English should be written in English script only.
+"""
             
             print("Sending query to Gemini API")
-            response = query_gemini(prompt, request.user_name)
+            response = query_gemini(prompt, request.user_name, kb_name, "gemini-2.0-flash", request.is_assamese_english_mixed)
             print(f"Received response from Gemini API: {len(response)} characters")
             
             # Process the response to ensure it maintains context
@@ -670,8 +791,78 @@ async def chat_stream(request: ChatRequest):
     
         try:
             print(f"Performing similarity search for query in the document")
-            # Increase the number of chunks retrieved for more comprehensive information
-            docs = kb.vector_store.similarity_search(request.query, k=15)
+            
+            # Pre-process the query to detect key topics
+            query_lower = request.query.lower()
+            
+            # Check for common topics in the query to optimize retrieval
+            is_eligibility_query = any(term in query_lower for term in [
+                "eligible", "eligibility", "qualify", "qualification", "criteria", 
+                "marks", "percentage", "grade", "cutoff", "get in", "admission", 
+                "requirements", "minimum", "class 12", "12th", "higher secondary"
+            ])
+            
+            is_admission_query = any(term in query_lower for term in [
+                "admission", "apply", "application", "entrance", "exam", "test", "jee",
+                "counseling", "selection", "how to get", "procedure", "process", "enrollment"
+            ])
+            
+            is_program_query = any(term in query_lower for term in [
+                "program", "course", "branch", "department", "major", "specialization",
+                "btech", "b.tech", "engineering", "cse", "ece", "ai", "ml"
+            ])
+            
+            is_fee_query = any(term in query_lower for term in [
+                "fee", "fees", "cost", "tuition", "expense", "payment", "scholarship",
+                "financial", "hostel fee", "semester fee", "annual"
+            ])
+            
+            # If specific topic detected, include topic-specific search filter
+            mmr_filter = None
+            if is_eligibility_query:
+                mmr_filter = "eligibility criteria academic qualifications cutoff marks"
+            elif is_admission_query:
+                mmr_filter = "admission process application procedure selection process"
+            elif is_program_query:
+                mmr_filter = "program courses branch department specialization btech engineering cse ece"
+            elif is_fee_query:
+                mmr_filter = "fee structure tuition fee hostel fee semester fee"
+            
+            # Use MMR for diversity in retrieval when no specific filter is available
+            # This helps to retrieve more diverse and relevant chunks
+            if mmr_filter:
+                # First get topic-specific chunks
+                topic_docs = kb.vector_store.similarity_search(
+                    request.query + " " + mmr_filter, 
+                    k=10
+                )
+                
+                # Then get general chunks related to the query
+                general_docs = kb.vector_store.max_marginal_relevance_search(
+                    request.query, 
+                    k=5,
+                    fetch_k=15
+                )
+                
+                # Combine both sets of chunks, removing duplicates
+                seen_content = set()
+                docs = []
+                
+                for doc in topic_docs + general_docs:
+                    if doc.page_content not in seen_content:
+                        seen_content.add(doc.page_content)
+                        docs.append(doc)
+                
+                # Limit to top 15 chunks
+                docs = docs[:15]
+            else:
+                # If no specific topic detected, use MMR to ensure diverse results
+                docs = kb.vector_store.max_marginal_relevance_search(
+                    request.query, 
+                    k=15,  # Return 15 chunks
+                    fetch_k=25  # Consider 25 chunks for diversity
+                )
+                
             print(f"Found {len(docs)} relevant chunks in the document")
             
             if not docs:
@@ -722,12 +913,23 @@ Important instructions:
 13. PRIORITIZE FACTUAL INFORMATION: Focus on providing factual information from the context first, before adding conversational elements.
 14. BE PRECISE: When asked about specific details like tuition fees, application deadlines, or contact information, provide the exact values from the context.
 """
+
+            # If the query is in Assamese-English mixed language, add instructions to respond similarly
+            if request.is_assamese_english_mixed:
+                prompt += """
+15. LANGUAGE STYLE: The user is using a mix of English and Assamese (Anglo-Assamese). 
+    - Respond in a similar mixed language style 
+    - DO NOT use Bengali script or any other language script
+    - Use common Assamese words like 'moi', 'apuni', 'tumi', 'ase', 'nai', 'loi', 'korim', 'koribo', 'lage' etc.
+    - Keep technical terms, college names, and program names in English
+16. NEVER respond in Bengali language or script. Assamese mixed with English should be written in English script only.
+"""
             
             print("Starting streaming response from Gemini API")
             
             async def stream_generator():
                 try:
-                    async for chunk in query_gemini_stream(prompt, request.user_name, kb_name):
+                    async for chunk in query_gemini_stream(prompt, request.user_name, kb_name, request.is_assamese_english_mixed):
                         # Format for SSE
                         yield f"data: {chunk}\n\n"
                 except Exception as e:
