@@ -1,0 +1,97 @@
+# B.Tech Admission Process at BSSRV University
+
+## Admission Overview
+BSSRV University offers admission to its B.Tech programs through a transparent and merit-based selection process. Candidates can apply for admission to various B.Tech programs based on their performance in entrance examinations and academic records.
+
+## Eligibility Criteria
+### Academic Qualifications
+- Candidates must have passed 10+2 or equivalent examination with Physics, Chemistry, and Mathematics as compulsory subjects.
+- Minimum aggregate of 60% marks (55% for SC/ST/PwD candidates) in PCM subjects.
+- Candidates appearing for their final 10+2 examinations can also apply provisionally.
+
+### Age Limit
+- Candidates should have been born on or after October 1, 2004 (for general category).
+- Age relaxation of 5 years for SC/ST/PwD candidates.
+
+## Entrance Examinations Accepted
+- JEE Main (Joint Entrance Examination)
+- State-level Engineering Entrance Examinations (like CEE)
+
+## Application Process
+1. **Online Application**
+   - Visit the official website admission.bssrv.ac.in/eforms/b-tech-2025-26/17/
+   - Register with a valid email ID and phone number
+   - Fill in the application form with accurate details
+   - Upload required documents
+   - Pay the application fee online
+
+2. **Required Documents**
+   - Recent passport-sized photograph
+   - Scanned signature
+   - 10th standard mark sheet and certificate
+   - 12th standard mark sheet and certificate (if available)
+   - JEE/State-level entrance score card
+   - Category certificate (SC/ST/OBC/EWS) if applicable
+   - PwD certificate if applicable
+   - Aadhar Card
+
+3. **Application Fee**
+   - General/OBC: Rs. 750/-
+   - SC/ST/PwD: Rs. 500/-
+   - Payment can be made through Credit Card, Debit Card, Net Banking, or UPI
+
+4. ***Application Deadline:
+   - 15th May, 2025
+
+## Selection Process
+1. **Merit List Preparation**
+   - 60% weightage to entrance exam score (JEE Main/State-level exams)
+   - 40% weightage to 10+2 or equivalent marks in PCM subjects
+
+2. **Counseling Process**
+   - Multiple rounds of counseling based on the merit list
+   - Candidates need to report for document verification on the assigned date
+   - Seat allotment based on merit and preference
+   - Fee payment to secure the seat
+
+## Fee Structure
+### One-time Fees
+- Admission Fee (Semester Fee): Rs. 23,200/-
+
+### Annual Fees
+- Tuition Fee: Rs. 23,200/- per semester
+
+### Hostel Fees (Optional)
+- Hostel Accommodation: Rs. 5,000/- per annum (including mess charges)
+
+## Contact Information
+For more information about the B.Tech program:
+Person in charge: Dr. Pranjit Das
+Phone: +91 97069 95315
+Website: https://bssrv.ac.in/department-of-cs/
+
+Apply Online for B.Tech Programs:
+For all B.Tech programs, applicants can now apply online through our streamlined application portal:
+- Main Application Portal: admission.bssrv.ac.in/eforms/b-tech-2025-26/17/
+- Direct CSE Application: admission.bssrv.ac.in/eforms/b-tech-2025-26/17/
+- Direct AI/ML Specialization Application: admission.bssrv.ac.in/eforms/b-tech-2025-26/17/
+- Direct ECE Application: admission.bssrv.ac.in/eforms/b-tech-2025-26/17/
+
+Application Process Steps:
+1. Visit the application portal and create your account
+2. Fill in your personal and academic details
+3. Upload required documents
+4. Pay the application fee
+5. Submit your application and note your application ID
+6. Track your application status through the applicant portal
+
+Application Status:
+After submitting your application, you can check its status at any time by logging into the applicant portal. The possible status updates include:
+- Submitted: Your application has been received
+- Under Review: Your application is being evaluated
+- Shortlisted: You have been shortlisted for the next round
+- Selected: Congratulations! You have been selected for admission
+- Waitlisted: You are on the waitlist
+- Rejected: Your application has not been accepted
+
+For any questions about your application status, contact DR. Pranjit Das at +91 97069 95315.

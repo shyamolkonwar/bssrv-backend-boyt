@@ -1,0 +1,70 @@
+# B.Tech Program at BSSRV University
+
+## Program Overview
+The Bachelor of Technology (B.Tech) program at BSSRV University is a 4-year undergraduate engineering program designed to provide students with a strong foundation in engineering principles, technical knowledge, and practical skills. Our curriculum is industry-aligned and regularly updated to keep pace with technological advancements.
+
+## Branches Offered
+Bachelor of Technology in Computer Science and Engineering (B.Tech CSE)
+Bachelor of Technology in Computer Science and Engineering (Artificial Intelligence and Machine Learning) (B.Tech CSE AI & ML)
+Bachelor of Technology in Computer Science and Business Science (B.Tech CSBS)
+Bachelor of Technology in Electronics and Communication Engineering (B.Tech ECE)
+
+## Program Highlights
+- AICTE approved curriculum
+- Project-based learning approach
+- Industry internships integrated into the program
+- State-of-the-art laboratories and research facilities
+- Focus on practical applications alongside theoretical knowledge
+- Mentorship by experienced faculty members
+- Regular workshops, seminars, and guest lectures by industry experts
+- Placement assistance through dedicated Training and Placement Cell
+
+## Curriculum Structure
+The B.Tech program follows a semester-based system with 8 semesters spread over 4 years:
+- First Year: Common to all branches, focusing on basic sciences, engineering mathematics, and fundamental engineering principles
+- Second Year: Branch-specific core courses and laboratory work
+- Third Year: Advanced branch-specific courses, electives, and mini-projects
+- Fourth Year: Specialized electives, major project work, and industry internship
+
+## Evaluation System
+The evaluation is based on a continuous assessment system:
+- Internal assessments: 40%
+- End-semester examinations: 60%
+- Practical and project evaluations
+- Mandatory attendance requirement of 75%
+
+## Research Opportunities
+Students have opportunities to engage in research projects under faculty guidance. The university has research collaborations with various industries and academic institutions, providing students with exposure to cutting-edge research areas.
+
+## Student Activities
+- Technical clubs: Coding Club, Robotics Club
+- Hackathons and coding competitions
+- Paper presentations and project exhibitions
+- Industrial visits and technical tours
+
+
+## Facilities
+- Classrooms
+- Computer labs with latest software
+- High-speed internet connectivity
+- 24/7 library access during examination periods
+- Student study areas and discussion rooms
+- Cafeteria and refreshment areas
+
+## Contact Information
+For more information about the B.Tech program:
+Person in charge: Dr. Pranjit Das
+Phone: +91 97069 95315
+Website: https://bssrv.ac.in/department-of-cs/
+
+## Application Process
+To apply for the B.Tech program at BSSRV University, candidates must complete the online application form available at: https://bssrv.edu.in/apply-btech
+Application deadline: May 30th for the academic year starting in August.
+
+## Key Application Links
+- Main Application Portal: admission.bssrv.ac.in/eforms/b-tech-2025-26/17/
+- Direct CSE Application: admission.bssrv.ac.in/eforms/b-tech-2025-26/17/
+- Direct AI/ML Specialization Application: admission.bssrv.ac.in/eforms/b-tech-2025-26/17/
+- Direct ECE Application: admission.bssrv.ac.in/eforms/b-tech-2025-26/17/
+
+For any questions about your application status, contact DR. Pranjit Das at +91 97069 95315.
